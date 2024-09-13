@@ -1,0 +1,597 @@
+﻿@{
+    ViewData["Title"] = "Application";
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Application Support</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Application Support</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                @* <div class="col-md-1"></div> *@
+
+                <div class="col-md-8">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Create Application Support</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="userRequirement"><span style="color: red">*</span> Requirement Type</label>
+                                    <select class="form-control select2bs4" style="width: 100%;" id="userRequirement" >
+                                        <!-- Dung rieng cho support nên value phải bằng id trong db -->
+                                        <option selected="selected" value="3">Support</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="isThisFor">
+                                        <span style="color: red">*</span> Is this
+                                        for
+                                    </label>
+                                    <select class="form-select" id="isThisFor" onchange="changeIsThisFor()">
+                                        <option selected="selected" value="1">Me</option>
+                                        <option value="2">Another existing employee</option>
+                                    </select>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="employee"><span style="color: red">*</span> Employee</label>
+                                            <select class="form-control select2bs4" style="width: 100%;" id="employee" onchange="selectEmployee(this)">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="manager"><span style="color: red">*</span> Manager</label>
+                                            <input type="text" class="form-control" id="manager"
+                                                   placeholder="Manager" disabled>
+                                            <input type="hidden" class="form-control" id="idCardManager"
+                                                   placeholder="Manager">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="requestedBy">
+                                        <span style="color: red">*</span> Requested
+                                        by
+                                    </label>
+                                    <input type="text" class="form-control" id="requestedBy"
+                                           placeholder="Requested by" disabled>
+                                    <input type="hidden" class="form-control" id="idCardRequestedBy"
+                                           placeholder="Requested by">
+                                </div>
+                                <div class="form-group">
+                                    <label for="factory"><span style="color: red">*</span> Factory</label>
+                                    <select class="form-control select2bs4" style="width: 100%;" id="factory">
+                                    </select>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="system"><span style="color: red">*</span> System</label>
+                                            <select class="form-control select2bs4" style="width: 100%;" id="system" onchange="selectSystem(this)">
+                                                <option value="-1">--None selected--</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="systemOwner"><span style="color: red">*</span> System Owner</label>
+                                            <select class="form-control select2bs4" style="width: 100%;" id="systemOwner">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="severity"><span style="color: red">*</span> Severity</label>
+                                    <select class="form-control select2bs4" style="width: 100%;" id="severity">
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="bussinessJustification">
+                                        <span style="color: red">*</span> Bussiness
+                                        Justification
+                                    </label>
+                                    <textarea class="form-control" rows="3" placeholder="Enter ..." id="bussinessJustification"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="additionalComments">
+                                        Additional
+                                        Comments
+                                    </label>
+                                    <textarea class="form-control" rows="3" placeholder="Enter ..." id="additionalComments"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="attachFile">Attach file</label>
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="attachFile">
+                                            <label class="custom-file-label" for="attachFile">Choose file</label>
+                                        </div>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">Upload</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+
+                            <div class="card-footer">
+                                <button class="btn btn-primary" onclick="submit()">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+@section Scripts {
+    <script>
+        $(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2()
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            })
+            bsCustomFileInput.init();
+        })
+
+        let token = ''
+        $(document).ready(function () {
+            token = getCookie('esign_token');
+            if (!token) {
+                window.location.replace("/auth")
+            }
+            else {
+                $('#userInfo').html(localStorage.getItem('display_name') + '(' + localStorage.getItem('user_id') + ')');
+            }
+
+            getUserByIdCard(localStorage.getItem('user_id'));
+            $('#requestedBy').val(localStorage.getItem('display_name'));
+            $('#idCardRequestedBy').val(localStorage.getItem('user_id'));
+
+            //getType();
+            getSystem();
+            getSeverity();
+            getFactory();
+        })
+
+        function getUserByIdCard(idCard) {
+            $.ajax({
+                url: '/User/GetUserByIdCard',
+                type: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + getCookie('esign_token')
+                },
+                data: { idCard: idCard },
+                success: function (res) {
+                    let data = res.data
+                    $('#employee').empty();
+                    $("#employee").append('<option value=' + data[0].id_card + '>' + data[0].display_name + '</option>');
+                    $('#manager').val(data[0].manager_name);
+                    $('#idCardManager').val(data[0].id_card_manager);
+                },
+                error: function (err) {
+                    if (err.status == 401) {
+                        logout();
+                    }
+                    else {
+                        alert(err);
+                    }
+                }
+            });
+        }
+
+        function changeIsThisFor() {
+            if ($('#isThisFor').find(":selected").val() == 1) {
+                getUserByIdCard(localStorage.getItem('user_id'));
+
+            }
+            else {
+                $.ajax({
+                    url: '/User/GetAllUser',
+                    type: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + getCookie('esign_token')
+                    },
+                    data: {},
+                    success: function (res) {
+                        let data = res.data
+                        $('#employee').empty();
+                        for (let i = 0; i < data.length; i++) {
+                            let opt = document.createElement('option');
+                            opt.value = data[i].id_card;
+                            opt.innerHTML = data[i].display_name;
+                            document.getElementById('employee').appendChild(opt);
+                            if (i == 0) {
+                                document.getElementById('employee').selectedIndex = i
+                                $('#manager').val(data[i].manager_name);
+                                $('#idCardManager').val(data[i].id_card_manager);
+                            }
+                        }
+
+                    },
+                    error: function (err) {
+                        if (err.status == 401) {
+                            logout();
+                        }
+                        else {
+                            alert(err);
+                        }
+                    }
+                });
+            }
+        }
+
+        function selectEmployee(sel) {
+            $.ajax({
+                url: '/User/GetUserByIdCard',
+                type: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + getCookie('esign_token')
+                },
+                data: { idCard: sel.value },
+                success: function (res) {
+                    let data = res.data
+                    if (!data[0].id_card_manager || !data[0].manager_name) {
+                        $('#manager').val('');
+                        $('#idCardManager').val('');
+                    }
+                    else {
+                        $('#manager').val(data[0].manager_name);
+                        $('#idCardManager').val(data[0].id_card_manager);
+                    }
+                },
+                error: function (err) {
+                    if (err.status == 401) {
+                        logout();
+                    }
+                    else {
+                        alert(err);
+                    }
+                }
+            })
+        }
+
+        function getSystem() {
+            $.ajax({
+                url: '/System/GetSystem',
+                type: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + getCookie('esign_token')
+                },
+                data: {},
+                success: function (res) {
+                    let data = res.data
+                    for (let i = 0; i < data.length; i++) {
+                        let opt = document.createElement('option');
+                        opt.value = data[i].id;
+                        opt.innerHTML = data[i].system;
+                        document.getElementById('system').appendChild(opt);
+                        if (i == 0) {
+                            document.getElementById('system').selectedIndex = i
+                        }
+                    }
+                },
+                error: function (err) {
+                    if (err.status == 401) {
+                        logout();
+                    }
+                    else {
+                        alert(err);
+                    }
+                }
+            });
+        }
+
+        function getSeverity() {
+            $.ajax({
+                url: '/Application/GetSeverity',
+                type: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + getCookie('esign_token')
+                },
+                data: {},
+                success: function (res) {
+                    let data = res.data
+                    for (let i = 0; i < data.length; i++) {
+                        let opt = document.createElement('option');
+                        opt.value = data[i].id;
+                        opt.innerHTML = data[i].severity + ' - ' + data[i].description;
+                        document.getElementById('severity').appendChild(opt);
+                        if (i == 0) {
+                            document.getElementById('severity').selectedIndex = i
+                        }
+                    }
+                },
+                error: function (err) {
+                    if (err.status == 401) {
+                        logout();
+                    }
+                    else {
+                        alert(err);
+                    }
+                }
+            });
+        }
+
+        function getFactory() {
+            $.ajax({
+                url: '/Application/GetFactory',
+                type: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + getCookie('esign_token')
+                },
+                data: {},
+                success: function (res) {
+                    let data = res.data
+                    for (let i = 0; i < data.length; i++) {
+                        let opt = document.createElement('option');
+                        opt.value = data[i].id;
+                        opt.innerHTML = data[i].factory;
+                        document.getElementById('factory').appendChild(opt);
+                        if (i == 0) {
+                            document.getElementById('factory').selectedIndex = i
+                        }
+                    }
+                },
+                error: function (err) {
+                    if (err.status == 401) {
+                        logout();
+                    }
+                    else {
+                        alert(err);
+                    }
+                }
+            });
+        }
+
+        function selectSystem(sel) {
+            //if ($('#system').find(":selected").val() == -1) $('#systemOwner').empty();
+            $('#systemOwner').empty();
+            $.ajax({
+                url: '/System/GetOwnerBySystem',
+                type: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + getCookie('esign_token')
+                },
+                data: { idSystem: sel.value },
+                success: function (res) {
+                    let data = res.data
+
+                    for (let i = 0; i < data.length; i++) {
+                        let opt = document.createElement('option');
+                        opt.value = data[i].id_card;
+                        opt.innerHTML = data[i].display_name;
+                        document.getElementById('systemOwner').appendChild(opt);
+                        if (i == 0) {
+                            document.getElementById('systemOwner').selectedIndex = i
+                        }
+                    }
+                },
+                error: function (err) {
+                    if (err.status == 401) {
+                        logout();
+                    }
+                    else {
+                        alert(err);
+                    }
+                }
+            });
+        }
+
+        function selectUserRequirement(sel) {
+            if (sel.value == 2) {
+                document.getElementById('system').value = 17
+                document.getElementById('system').dispatchEvent(new Event('change'));
+
+            } else {
+                document.getElementById('system').value = -1
+                document.getElementById('system').dispatchEvent(new Event('change'));
+            }
+        }
+
+        @* function getType() {
+            $.ajax({
+                url: '/Type/GetType',
+                type: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + getCookie('esign_token')
+                },
+                data: {},
+                success: function (res) {
+                    let data = res.data
+                    for (let i = 0; i < data.length; i++) {
+                        let opt = document.createElement('option');
+                        opt.value = data[i].id;
+                        opt.innerHTML = data[i].type;
+                        document.getElementById('userRequirement').appendChild(opt);
+                        if (i == 0) {
+                            document.getElementById('userRequirement').selectedIndex = i
+                        }
+                    }
+                },
+                error: function (err) {
+                    if (err.status == 401) {
+                        logout();
+                    }
+                    else {
+                        alert(err);
+                    }
+                }
+            });
+        } *@
+
+        function submit() {
+            if (!$('#userRequirement').val()) {
+                alert('User Requirement is required!');
+                return false;
+            }
+            if (!$('#isThisFor').val()) {
+                alert('Is this for is required!');
+                return false;
+            }
+            if (!$('#employee').val()) {
+                alert('Employee is required!');
+                return false;
+            }
+            if (!$('#manager').val()) {
+                alert('Manager is required!');
+                return false;
+            }
+            if (!$('#requestedBy').val()) {
+                alert('equested by is required!');
+                return false;
+            }
+            if (!$('#system').val() || $('#system').val() == -1) {
+                alert('System is required!');
+                return false;
+            }
+            if (!$('#severity').val() || $('#severity').val() == -1) {
+                alert('Severity is required!');
+                return false;
+            }
+            if (!$('#factory').val() || $('#factory').val() == -1) {
+                alert('Factory is required!');
+                return false;
+            }
+            if (!$('#systemOwner').val()) {
+                alert('System Owner is required!');
+                return false;
+            }
+            if (!$('#bussinessJustification').val()) {
+                alert('Bussiness Justification is required!');
+                return false;
+            }
+            var fileUpload = document.getElementById("attachFile");
+            if (fileUpload.files.length != 0) {
+
+                let file = new FormData();
+                file.append("file", fileUpload.files[0])
+
+                $.ajax({
+                    url: '/Application/UploadFile',
+                    type: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + getCookie('esign_token')
+                    },
+                    data: file,
+                    contentType: false,
+                    processData: false,
+                    success: function (res) {
+                        if (res.statusCode == "FAIL") {
+                            alert(res.message)
+                        } else {
+                            console.log(res.data[0].fileUrl)
+                            createApplication(res.data[0].fileUrl, res.data[0].fileName)
+                        }
+
+                    },
+                    error: function (err) {
+                        if (err.status == 401) {
+                            logout();
+                        }
+                        else {
+                            alert(err);
+                        }
+                    }
+                });
+            }
+            else {
+                createApplication('', '')
+            }
+        }
+
+        function createApplication(fileUrl, fileName) {
+            let data = new FormData();
+            data.append("id_type", $('#userRequirement').val() * 1)
+            data.append("id_card_user_require", $('#employee').val())
+            data.append("name_user_require", $("#employee :selected").text())
+            data.append("id_card_manager", $('#idCardManager').val())
+            data.append("name_manager", $('#manager').val())
+            data.append("id_card_user_create", $('#idCardRequestedBy').val())
+            data.append("id_system", $('#system').val() * 1)
+            data.append("id_severity", $('#severity').val() * 1)
+            data.append("id_factory", $('#factory').val() * 1)
+            data.append("id_card_system_owner", $('#systemOwner').val())
+            data.append("bussiness_justification", $('#bussinessJustification').val())
+            data.append("additional_comments", $('#additionalComments').val())
+            data.append("fileUrl", fileUrl)
+            data.append("fileName", fileName)
+            //data.append("file", $('#attachFile')[0].files[0])
+
+        @* let data = {
+            "id_type": $('#userRequirement').val() * 1,
+            "id_card_user_require": $('#employee').val(),
+            "name_user_require": $("#employee :selected").text(),
+            "id_card_manager": $('#idCardManager').val(),
+            "name_manager": $('#manager').val(),
+            "id_card_user_create": $('#idCardRequestedBy').val(),
+            "id_system": $('#system').val() * 1,
+            "id_severity": $('#severity').val() * 1,
+            "id_factory": $('#factory').val() * 1,
+            "id_card_system_owner": $('#systemOwner').val(),
+            "bussiness_justification": $('#bussinessJustification').val(),
+            "additional_comments": $('#additionalComments').val(),
+            "fileUrl": fileUrl,
+            "fileName": fileName
+            } *@
+                console.log(data)
+            $.ajax({
+                url: '/Application/CreateApplication',
+                type: 'POST',
+                contentType: false, // Prevent jQuery from setting the content type
+                processData: false, // Prevent jQuery from processing the data
+                headers: {
+                    'Authorization': 'Bearer ' + getCookie('esign_token')
+                },
+                data: data,
+                success: function (res) {
+                    alert(res.message)
+                    location.reload();
+                },
+                error: function (err) {
+                    if (err.status == 401) {
+                        logout();
+                    }
+                    else {
+                        alert(err);
+                    }
+                }
+            })
+        }
+    </script>
+}

@@ -1,0 +1,427 @@
+﻿@{
+    ViewData["Title"] = "Detail Application";
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0" id="headerContent">Application</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Application</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                @* <div class="col-md-1"></div> *@
+
+                <div class="col-md-10">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Detail Application</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <div>
+                            <div class="card-body">
+                                <div>
+                                    <input type="hidden" class="form-control" id="idSignFlow" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="userRequirement">User Requirement</label>
+                                    <input type="text" class="form-control" id="userRequirement" disabled>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="employee">Employee</label>
+                                            <input type="text" class="form-control" id="employee" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="manager">Manager</label>
+                                            <input type="text" class="form-control" id="manager" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="requestedBy">Requested by</label>
+                                    <input type="text" class="form-control" id="requestedBy" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="factory">Factory</label>
+                                    <input type="text" class="form-control" id="factory" disabled>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="system">System</label>
+                                            <input type="text" class="form-control" id="system" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="systemOwner">System Owner</label>
+                                            <input type="text" class="form-control" id="systemOwner" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="severity">Severity</label>
+                                    <input type="text" class="form-control" id="severity" disabled>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="bussinessJustification">Bussiness Justification</label>
+                                    <textarea class="form-control" rows="3" id="bussinessJustification" disabled></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="additionalComments">Additional Comments</label>
+                                    <textarea class="form-control" rows="3" id="additionalComments" disabled></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="attachFile">Attach file</label>
+                                    <div id="attachFile">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="table-sign-flow">Sign flow</label>
+                                    <table class="table table-bordered table-hover" id="table-sign-flow">
+                                        <thead>
+                                            <tr>
+                                                <th>Signer</th>
+                                                <th>Sequence</th>
+                                                <th>Sign At</th>
+                                                <th>Comment</th>
+                                                <th>Start Date</th>
+                                                <th>Due Date</th>
+                                                <th>Status</th>
+                                                <th>Attach File</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbody-sign-flow"></tbody>
+                                    </table>
+                                </div>
+                                <div class="form-group" style="display:none" id="table-user-rate">
+                                    <label for="table-rate">User rate</label>
+                                    <table class="table table-bordered table-hover" id="table-rate">
+                                        <thead>
+                                            <tr>
+                                                <th>User require</th>
+                                                <th>Id card</th>
+                                                <th>Rate comment</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbody-rate"></tbody>
+                                    </table>
+                                </div>
+                                <br>
+                                <div id="sign-area" style="display:none">
+                                    <div class="form-group">
+                                        <div style="color:red" class="admin-area "><b>Sign Area</b><div class="underline"></div></div>
+                                    </div>
+                                    <div class="form-group" style="display:none" id="timeSpan">
+                                        <label>Date range for work:</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="far fa-calendar-alt"></i>
+                                                </span>
+                                            </div>
+                                            <input type="text" class="form-control float-right" id="reservation">
+                                        </div>
+                                        <!-- /.input group -->
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="signerComments">Signer Comments</label>
+                                        <textarea class="form-control" rows="3" id="signerComments"></textarea>
+                                    </div>
+                                </div>
+                                <div id="rate-area" style="display:none">
+                                    <div class="form-group">
+                                        <div style="color:red" class="admin-area "><b>Rate Area</b><div class="underline"></div></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="signerComments">User Rate Comments</label>
+                                        <textarea class="form-control" rows="3" id="user-rate-comment-text"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+
+                            <div class="card-footer" >
+                                <span style="float: left" id="card-footer-left">
+                                </span>
+                                <span style="float: right" id="card-footer-right">
+                                    
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+@section Scripts {
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const applicationNo = urlParams.get('no');
+        const typeSign = urlParams.get('sign');
+
+        $(function () {
+            //Date range picker
+            $('#reservation').daterangepicker()
+        })
+
+        let token = ''
+        $(document).ready(function () {
+            token = getCookie('esign_token');
+            if (!token) {
+                window.location.replace("/auth")
+            }
+            else {
+                $('#userInfo').html(localStorage.getItem('display_name') + '(' + localStorage.getItem('user_id') + ')');
+            }
+
+            if (typeSign == 1) { //1: la ki, 0 la history
+                $('#card-footer-right').html(`<button class="btn btn-danger" onclick="signApplication(4)">Reject</button>
+                                        <button class="btn btn-success" onclick="signApplication(3)">Approval</button>`)
+
+                document.getElementById("sign-area").style.display = 'block'
+                //document.getElementById("timeSpan").style.display = 'block'
+            }
+            $('#headerContent').html('Application no: <b>' + applicationNo + '</b>')
+            getApplication();
+        })
+
+        function getApplication() {
+            $.ajax({
+                url: '/Application/GetSignAppByApplicationNo',
+                type: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + getCookie('esign_token')
+                },
+                data: { 
+                    applicationNo: applicationNo
+                },
+                success: function (res) {
+                    let data = res.data
+                    $('#userRequirement').val(data[0].type)
+                    $('#employee').val(data[0].name_user_require)
+                    $('#manager').val(data[0].name_manager)
+                    $('#requestedBy').val(data[0].name_user_require)
+                    if (typeof (data[0].sub_system) == 'object' && Object.keys(data[0].sub_system).length === 0) {
+                        $('#system').val(data[0].system)
+                    } else {
+                        $('#system').val(data[0].sub_system)
+                    }
+                    $('#severity').val(data[0].severity + ' - ' + data[0].description)
+                    $('#factory').val(data[0].factory)
+                    $('#systemOwner').val(data[0].name_owner)
+                    $('#bussinessJustification').val(data[0].bussiness_justification)
+                    $('#additionalComments').val(data[0].additional_comments)
+                    $('#idSignFlow').val(data[0].id_sign_flow)
+                    getSignFlow(data[0].id)
+                    if (data[0].file_name) {
+                        let urlList = data[0].file_name.split('.')
+                        let extensionFile = urlList[urlList.length - 1]
+
+                        let base64 = 'data:text/plain;base64,' + data[0].file;
+                        let baseUrl = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
+                        if (extensionFile === 'docx') {
+                            $('#attachFile').html(`<a href="${base64}" download="${data[0].file_name}"><img src="${baseUrl}/lib/dist/img/docx.png" alt="Docx" class="file-image" /> ${data[0].file_name}</a>`)
+                        }
+                        if (extensionFile === 'pdf') {
+                            $('#attachFile').html(`<a href="${base64}" download="${data[0].file_name}"><img src="${baseUrl}/lib/dist/img/pdf.jpg" alt="PDF" class="file-image" /> ${data[0].file_name}</a>`)
+                        }
+                        if (extensionFile === 'xlsx' || extensionFile === 'xls') {
+                            $('#attachFile').html(`<a href="${base64}" download="${data[0].file_name}"><img src="${baseUrl}/lib/dist/img/excel.png" alt="Excel" class="file-image" /> ${data[0].file_name}</a>`)
+                        }
+                        if (extensionFile === 'pptx') {
+                            $('#attachFile').html(`<a href="${base64}" download="${data[0].file_name}"><img src="${baseUrl}/lib/dist/img/powerpoint.png" alt="Powerpoint" class="file-image" /> ${data[0].file_name}</a>`)
+                        }
+                    }
+
+                    if ( typeof(data[0].user_rate_value) == 'object' && Object.keys(data[0].user_rate_value).length === 0) {
+                        if (data[0].value_sign == 5 && data[0].id_card_user_require == localStorage.getItem("user_id")) {
+                            document.getElementById("rate-area").style.display = 'block'
+                            $('#card-footer-right').html(`<button class="btn btn-danger" onclick="rateApplication(${data[0].id}, 'NOT GOOD')">NOT GOOD</button>
+                                                                <button class="btn btn-success" onclick="rateApplication(${data[0].id}, 'PASS')">PASS</button>`)
+                        }
+                    }
+                    else{
+                        document.getElementById("table-user-rate").style.display = 'block'
+                        if (data[0].user_rate_value === 'PASS') { classBadge = 'badge-success' }
+                        if (data[0].user_rate_value === 'NOT GOOD') { classBadge = 'badge-danger' }
+                        let htmlTBodyRate = ''
+                        htmlTBodyRate += `<tr>
+                                                <th>${data[0].name_user_require}</th>
+                                                <th>${data[0].id_card_user_require}</th>
+                                                <th>${data[0].user_rate_comment}</th>
+                                                <th><span class="badge ${classBadge}">${data[0].user_rate_value}</span></th>
+                                            </tr>`
+                        $('#tbody-rate').html(htmlTBodyRate)
+                    }
+                },
+                error: function (err) {
+                    if (err.status == 401) {
+                        logout();
+                    }
+                    else {
+                        alert(err);
+                    }
+                }
+            });
+        }
+
+        function signApplication(valueSign) {
+            if (confirm('Do you want to sign this application?')) {
+                $.ajax({
+                    url: '/Application/SignApplication',
+                    type: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + getCookie('esign_token')
+                    },
+                    data: {
+                        signFlowId: $('#idSignFlow').val() * 1,
+                        valueSign: valueSign,
+                        comment: $('#signerComments').val(),
+                        timeSpan: $('#reservation').val()
+                    },
+                    success: function (res) {
+                        alert(res.message)
+                        window.location.replace('/application/sign')
+                    },
+                    error: function (err) {
+                        if (err.status == 401) {
+                            logout();
+                        }
+                        else {
+                            alert(err);
+                        }
+                    }
+                });
+            }
+        }
+
+        function getSignFlow(idApp) {
+            $.ajax({
+                url: '/Application/GetSignFlowByIdApplication',
+                type: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + getCookie('esign_token')
+                },
+                data: { idApp: idApp },
+                success: function (res) {
+                    let data = res.data
+                    let htmlTBodyModal = ''
+                    for (let i = 0; i < data.length; i++) {
+                        let classBadge = '';
+                        if (data[i].id_value_sign == 1) { classBadge = 'badge-warning' }
+                        if (data[i].id_value_sign == 2) { classBadge = 'badge-primary' }
+                        if (data[i].id_value_sign == 3) { classBadge = 'badge-success' }
+                        if (data[i].id_value_sign == 4) { classBadge = 'badge-danger' }
+                        if (data[i].id_value_sign == 5) { classBadge = 'badge-info' }
+                        if (data[i].id_value_sign == 6) { classBadge = 'badge-secondary' }
+                        if (data[i].id_value_sign == 7) { classBadge = 'badge-secondary' }
+
+                        let htmlFile = '';
+                        if (data[i].file) { 
+                            let urlList = data[i].file_name.split('.')
+                            let extensionFile = urlList[urlList.length - 1]
+
+                            let base64 = 'data:text/plain;base64,' + data[i].file;
+
+                            let baseUrl = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
+                            
+                            if (extensionFile === 'docx') {
+                                htmlFile = `<a href="${base64}" download="${data[i].file_name}"><img src="${baseUrl}/lib/dist/img/docx.png" alt="Docx" class="file-image" /> ${data[i].file_name}</a>`
+                            }
+                            if (extensionFile === 'pdf') {
+                                htmlFile = `<a href="${base64}" download="${data[i].file_name}"><img src="${baseUrl}/lib/dist/img/pdf.jpg" alt="PDF" class="file-image" /> ${data[i].file_name}</a>`
+                            }
+                            if (extensionFile === 'xlsx' || extensionFile === 'xls') {
+                                htmlFile = `<a href="${base64}" download="${data[i].file_name}"><img src="${baseUrl}/lib/dist/img/excel.png" alt="Excel" class="file-image" /> ${data[i].file_name}</a>`
+                            }
+                            if (extensionFile === 'pptx') {
+                                htmlFile = `<a href="${base64}" download="${data[i].file_name}"><img src="${baseUrl}/lib/dist/img/powerpoint.png" alt="Powerpoint" class="file-image" /> ${data[i].file_name}</a>`
+                            }
+                        }
+                        htmlTBodyModal += `<tr>
+                                                <th>${data[i].display_name}</th>
+                                                <th>${data[i].sequence}</th>
+                                                <th>${convertDate(data[i].sign_at)}</th>
+                                                <th>${data[i].comment}</th>
+                                                <th>${convertDate2(data[i].start_date)}</th>
+                                                <th>${convertDate2(data[i].end_date)}</th>
+                                                <th><span class="badge ${classBadge}">${data[i].value_sign}</span></th>
+                                                <th>${htmlFile}</th>
+                                            </tr>`
+
+                    }
+                    $('#tbody-sign-flow').html(htmlTBodyModal)
+
+                },
+                error: function (err) {
+                    if (err.status == 401) {
+                        logout();
+                    }
+                    else {
+                        alert(err);
+                    }
+                }
+            });
+        }
+
+        function rateApplication(idApp, rateValue) {
+            if (confirm('Do you want to rate this application?')) {
+                $.ajax({
+                    url: '/Application/RateApplication',
+                    type: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + getCookie('esign_token')
+                    },
+                    data: {
+                        idApp: idApp,
+                        rateValue: rateValue,
+                        rateComment: $('#user-rate-comment-text').val()
+                    },
+                    success: function (res) {
+                        alert(res.message)
+                        window.location.replace('/application/history')
+                    },
+                    error: function (err) {
+                        if (err.status == 401) {
+                            logout();
+                        }
+                        else {
+                            alert(err);
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+}
