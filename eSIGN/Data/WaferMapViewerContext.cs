@@ -25,6 +25,8 @@ public partial class WaferMapViewerContext : DbContext
 
     public virtual DbSet<WaferMap> WaferMaps { get; set; }
 
+    public virtual DbSet<WaferMapRaw> WaferMapRaws { get; set; }
+
     public virtual DbSet<WaferMapValue> WaferMapValues { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -157,7 +159,7 @@ public partial class WaferMapViewerContext : DbContext
         {
             entity
                 .HasNoKey()
-                .ToTable("wafer_map");
+                .ToTable("wafer_map", tb => tb.HasTrigger("TrgDeleteWaferMap"));
 
             entity.Property(e => e.ColumnNumberX).HasColumnName("column_number_x");
             entity.Property(e => e.ColumnNumberY).HasColumnName("column_number_y");
@@ -165,6 +167,7 @@ public partial class WaferMapViewerContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("create_at");
+            entity.Property(e => e.FrameIdRow).HasColumnName("frame_id_row");
             entity.Property(e => e.Id)
                 .ValueGeneratedOnAdd()
                 .HasColumnName("id");
@@ -172,6 +175,7 @@ public partial class WaferMapViewerContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("id_card");
+            entity.Property(e => e.LotRow).HasColumnName("lot_row");
             entity.Property(e => e.ProfileName)
                 .HasMaxLength(100)
                 .HasColumnName("profile_name");
@@ -182,6 +186,28 @@ public partial class WaferMapViewerContext : DbContext
                 .HasColumnName("update_at");
             entity.Property(e => e.X).HasColumnName("x");
             entity.Property(e => e.Y).HasColumnName("y");
+        });
+
+        modelBuilder.Entity<WaferMapRaw>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("wafer_map_raw");
+
+            entity.Property(e => e.CreateAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("create_at");
+            entity.Property(e => e.Id)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("id");
+            entity.Property(e => e.IdWaferMap).HasColumnName("id_wafer_map");
+            entity.Property(e => e.UpdateAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("update_at");
+            entity.Property(e => e.XRaw).HasColumnName("x_raw");
+            entity.Property(e => e.YRaw).HasColumnName("y_raw");
         });
 
         modelBuilder.Entity<WaferMapValue>(entity =>
@@ -202,6 +228,10 @@ public partial class WaferMapViewerContext : DbContext
                 .ValueGeneratedOnAdd()
                 .HasColumnName("id");
             entity.Property(e => e.IdWaferMap).HasColumnName("id_wafer_map");
+            entity.Property(e => e.LotValue)
+                .HasMaxLength(500)
+                .IsUnicode(false)
+                .HasColumnName("lot_value");
             entity.Property(e => e.UnitId)
                 .HasMaxLength(500)
                 .IsUnicode(false)

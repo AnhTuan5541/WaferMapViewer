@@ -20,4 +20,6 @@ public partial class WaferMapValue
     public DateTime? UpdateAt { get; set; }
 
     public int? IdWaferMap { get; set; }
+
+    public string? LotValue { get; set; }
 }

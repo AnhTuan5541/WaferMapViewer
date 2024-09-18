@@ -10,6 +10,8 @@ using System.Data;
 using System.Diagnostics;
 using System.Security.Claims;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using Newtonsoft.Json;
+
 
 namespace WaferMapViewer.Controllers
 {
@@ -521,7 +523,113 @@ namespace WaferMapViewer.Controllers
                 return StatusCode(500, errorResponse);
             }
         }
+        [HttpGet]
+        [Authorize]
+        public IActionResult GetWaferMapRaw(int idWaferMap)
+        {
+            string functionName = ControllerContext.ActionDescriptor.ControllerName + "/" + System.Reflection.MethodBase.GetCurrentMethod().Name;
+            string userid = User.FindFirstValue(ClaimTypes.Name);
+            try
+            {
+                using var connection = new SqlConnection(_connection.DefaultConnection);
+                using var command = new SqlCommand("GetWaferMapRaw", connection) { CommandType = CommandType.StoredProcedure };
 
+
+                // Thêm các tham số cho stored procedure (nếu cần)
+                command.Parameters.AddWithValue("@idWaferMap", idWaferMap);
+
+                connection.Open();
+                var reader = command.ExecuteReader();
+
+                List<Dictionary<string, object>> data = CommonFunction.GetDataFromProcedure(reader);
+
+                CommonFunction.LogInfo(_connection.DefaultConnection, userid, "Get wafer map raw success", CommonFunction.SUCCESS, functionName);
+                var response = new CommonResponse<Dictionary<string, object>>
+                {
+                    StatusCode = CommonFunction.SUCCESS,
+                    Message = "Get wafer map raw success",
+                    Data = data,
+                    size = data.Count
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi (ví dụ: log lỗi, trả về phản hồi lỗi)
+                CommonFunction.LogInfo(_connection.DefaultConnection, userid, ex.Message, CommonFunction.ERROR, functionName);
+                var errorResponse = new CommonResponse<User>
+                {
+                    StatusCode = CommonFunction.ERROR,
+                    Message = ex.Message,
+                    Data = null,
+                    size = 0
+                };
+                return StatusCode(500, errorResponse);
+            }
+        }
+        [HttpPost]
+        [Authorize]
+        public IActionResult AddWaferMapRaw([FromBody] List<Dictionary<string, int>> listMapRaw)
+        {
+            string functionName = ControllerContext.ActionDescriptor.ControllerName + "/" + System.Reflection.MethodBase.GetCurrentMethod().Name;
+            string userid = User.FindFirstValue(ClaimTypes.Name);
+            try
+            {
+                using var connection = new SqlConnection(_connection.DefaultConnection);
+                connection.Open();
+                using (var bulkCopy = new SqlBulkCopy(connection))
+                {
+                    bulkCopy.DestinationTableName = "wafer_map_raw";
+
+                    // Map các cột từ listMapRaw vào bảng đích
+                    bulkCopy.ColumnMappings.Add("id_wafer_map", "id_wafer_map");
+                    bulkCopy.ColumnMappings.Add("x_raw", "x_raw");
+                    bulkCopy.ColumnMappings.Add("y_raw", "y_raw");
+
+                    // Tạo DataTable từ listMapRaw
+                    var dataTable = new DataTable();
+                    dataTable.Columns.Add("id_wafer_map", typeof(int));
+                    dataTable.Columns.Add("x_raw", typeof(int));
+                    dataTable.Columns.Add("y_raw", typeof(int));
+
+                    foreach (var item in listMapRaw)
+                    {
+                        var row = dataTable.NewRow();
+                        row["id_wafer_map"] = item["id_wafer_map"];
+                        row["x_raw"] = item["x_raw"];
+                        row["y_raw"] = item["y_raw"];
+                        dataTable.Rows.Add(row);
+                    }
+
+                    // Sử dụng SqlBulkCopy để lưu dữ liệu vào cơ sở dữ liệu
+                    bulkCopy.WriteToServer(dataTable);
+                }
+
+
+                CommonFunction.LogInfo(_connection.DefaultConnection, userid, "Add wafer map raw success", CommonFunction.SUCCESS, functionName);
+                var response = new CommonResponse<Dictionary<string, object>>
+                {
+                    StatusCode = CommonFunction.SUCCESS,
+                    Message = "Add wafer map raw success",
+                    Data = null,
+                    size = listMapRaw.Count
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi (ví dụ: log lỗi, trả về phản hồi lỗi)
+                CommonFunction.LogInfo(_connection.DefaultConnection, userid, ex.Message, CommonFunction.ERROR, functionName);
+                var errorResponse = new CommonResponse<User>
+                {
+                    StatusCode = CommonFunction.ERROR,
+                    Message = ex.Message,
+                    Data = null,
+                    size = 0
+                };
+                return StatusCode(500, errorResponse);
+            }
+        }
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> UploadFile(IEnumerable<IFormFile> files, int idWaferMap, int lotRow, int rowStart, int frameIdRow, int columnNumberX, int columnNumberY)

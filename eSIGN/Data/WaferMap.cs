@@ -24,4 +24,8 @@ public partial class WaferMap
     public int? ColumnNumberX { get; set; }
 
     public int? ColumnNumberY { get; set; }
+
+    public int? LotRow { get; set; }
+
+    public int? FrameIdRow { get; set; }
 }
