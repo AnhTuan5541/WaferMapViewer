@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home page";
 }
 @section Styles {
     <style>
@@ -766,34 +766,35 @@
                 alert('You do not choose profile yet');
                 return false;
             }
+            if (confirm('Do you want to delete profile?')) {
+                $.ajax({
+                    url: '/Home/DeleteProfile',
+                    type: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + getCookie('esign_token')
+                    },
+                    data: { id: idWaferMap },
+                    //contentType: false,
+                    //processData: false,
+                    success: function (res) {
+                        if (res.statusCode == "FAIL") {
+                            alert(res.message)
+                        } else {
+                            alert(res.message)
+                            window.location.replace('/')
+                        }
 
-            $.ajax({
-                url: '/Home/DeleteProfile',
-                type: 'POST',
-                headers: {
-                    'Authorization': 'Bearer ' + getCookie('esign_token')
-                },
-                data: { id: idWaferMap},
-                //contentType: false,
-                //processData: false,
-                success: function (res) {
-                    if (res.statusCode == "FAIL") {
-                        alert(res.message)
-                    } else {
-                        alert(res.message)
-                        window.location.replace('/')
+                    },
+                    error: function (err) {
+                        if (err.status == 401) {
+                            logout();
+                        }
+                        else {
+                            alert(err.responseJSON.message)
+                        }
                     }
-
-                },
-                error: function (err) {
-                    if (err.status == 401) {
-                        logout();
-                    }
-                    else {
-                        alert(err.responseJSON.message)
-                    }
-                }
-            });
+                });
+            }
         }
         function uploadFile() {
             let formData = new FormData();
@@ -856,25 +857,24 @@
             let selectedUnit = []
             let stringUnit = $('#areaUnit').val()
             let listAreaUnit = stringUnit.split(";")
-
             for (let i = 0; i < options.length; i++) {
                 if (options[i].selected) {
                     if (actionUnit == "search") {
-                        options[i].classList.add('selectedUnit');
-
                         // Add to listCount
 
                         if (!listCountUnit.includes(options[i].text)) {
                             listCountUnit.push(options[i].text)
+                            options[i].classList.add('selectedUnit');
                         }
                     }
                     if (actionUnit == "remove") {
-                        options[i].classList.remove('selectedUnit');
+                        
 
                         //remove from listCount
                         const index = listCountUnit.indexOf(options[i].text);
                         if (index > -1) { // only splice array when item is found
                             listCountUnit.splice(index, 1); // 2nd parameter means remove one item only
+                            options[i].classList.remove('selectedUnit');
                         }
                     }
                     selectedUnit.push(options[i].text)
@@ -919,87 +919,44 @@
             countPosition(actionUnit, listCountUnit)
         }
 
-        function drawWaferMap(actionUnit, listUnit) {
-            let stringUnit = listUnit.join(";")
-            stringUnit += ";"
-            stringUnit += $('#areaUnit').val()
-            console.log(stringUnit)
-            if (stringUnit.length > 10000) {
-                alert("You choose too much unit! Please reduce list!")
-                return;
-            }
-            $.ajax({
-                url: '/Home/CountPositionUnit',
-                type: 'GET',
-                headers: {
-                    'Authorization': 'Bearer ' + getCookie('esign_token')
-                },
-                data: {
-                    idWaferMap: idProfile,
-                    stringUnit: stringUnit,
-                    frameId: frameId
-                },
-                success: function (res) {
-                    let data = res.data
-                    for (let i = 0; i < data.length; i++) {
-                        let idValue = data[i].value_x + 'and' + data[i].value_y
-                        if (actionUnit == "search") {
-                            document.getElementById(idValue).style.backgroundColor = '#ff3434';
-                        }
-                        if (actionUnit == "remove") {
-                            document.getElementById(idValue).style.backgroundColor = '#c3f9cf';
-                        }
-                    }
-
-                },
-                error: function (err) {
-                    if (err.status == 401) {
-                        logout();
-                    }
-                    else {
-                        alert(err.responseJSON.message)
-                    }
-                }
-            });
-        }
-
+        
         function countPosition(actionUnit, listUnit) {
             let elements = document.querySelectorAll('.cellCheckMap');
             elements.forEach(function (element) {
                 element.style.backgroundColor = '#c3f9cf';
                 element.innerHTML = '';
             });
-            let stringUnit = listUnit.join(";")
-            //stringUnit += $('#areaUnit').val()
-            if (stringUnit.length > 10000) {
-                alert("You choose too much unit! Please reduce list!")
-                return;
+            let dataUnit = {
+                idWaferMap: idProfile * 1,
+                frameId: frameId,
+                listUnit: listUnit
             }
+            let stringUnit = listUnit.join(";")
+            console.log(JSON.stringify(dataUnit))
+            //stringUnit += $('#areaUnit').val()
+            
             $.ajax({
                 url: '/Home/CountPositionUnit',
-                type: 'GET',
+                type: 'POST',
                 headers: {
                     'Authorization': 'Bearer ' + getCookie('esign_token')
                 },
-                data: {
-                    idWaferMap: idProfile,
-                    stringUnit: stringUnit,
-                    frameId: frameId
-                },
+                data: JSON.stringify(dataUnit),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
                 success: function (res) {
                     let data = res.data
                     let position1 = 0, position2 = 0, position3 = 0, position4 = 0, position5 = 0, position6 = 0, totalPosition = 0;
                     for (let i = 0; i < data.length; i++) {
-                        if (data[i].unit_qty == 1) position1++;
-                        if (data[i].unit_qty == 2) position2++;
-                        if (data[i].unit_qty == 3) position3++;
-                        if (data[i].unit_qty == 4) position4++;
-                        if (data[i].unit_qty == 5) position5++;
-                        if (data[i].unit_qty >= 6) position6++;
-
                         let idValue = data[i].value_x + 'and' + data[i].value_y
                         $(`#${idValue}`).html(data[i].unit_qty)
-                        document.getElementById(idValue).style.backgroundColor = '#ff3434';
+                        if (data[i].unit_qty == 1) { position1++; document.getElementById(idValue).style.backgroundColor = '#ffe0ee'; }
+                        if (data[i].unit_qty == 2) { position2++; document.getElementById(idValue).style.backgroundColor = '#fcd358'; }
+                        if (data[i].unit_qty == 3) { position3++; document.getElementById(idValue).style.backgroundColor = '#e8a66f'; }
+                        if (data[i].unit_qty == 4) { position4++; document.getElementById(idValue).style.backgroundColor = '#f24a97'; }
+                        if (data[i].unit_qty == 5) { position5++; document.getElementById(idValue).style.backgroundColor = '#f87910'; }
+                        if (data[i].unit_qty >= 6) { position6++; document.getElementById(idValue).style.backgroundColor = '#f61d07'; }
+
                     }
                     $('#position1').html(position1)
                     $('#position2').html(position2)
@@ -1307,7 +1264,7 @@
                     }
                     listMapRaw.push(raw)
                 });
-                console.log(listMapRaw)
+                console.log(JSON.stringify(listMapRaw))
                 // let formData = new FormData();
                 // formData.append('listMapRaw', listMapRaw);
                 

@@ -1,9 +1,8 @@
-using WaferMapViewer.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.Runtime;
 using System.Text;
+using WaferMapViewer.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,11 +48,22 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
+    name: "LCRCreate",
+    pattern: "wafer-map-viewer",
+    defaults: new { controller = "Home", action = "Index" });
+
+app.MapControllerRoute(
+    name: "LCRCreate",
+    pattern: "lcr-create",
+    defaults: new { controller = "LCR", action = "Index" });
+
+app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
 
-public class ConnectionStrings() { 
+public class ConnectionStrings()
+{
     public string DefaultConnection { get; set; }
 }

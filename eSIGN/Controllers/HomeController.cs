@@ -11,6 +11,9 @@ using System.Diagnostics;
 using System.Security.Claims;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Text.Json;
+
 
 
 namespace WaferMapViewer.Controllers
@@ -477,9 +480,9 @@ namespace WaferMapViewer.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize]
-        public IActionResult CountPositionUnit(int idWaferMap, string frameId, string stringUnit)
+        public IActionResult CountPositionUnit([FromBody] Dictionary<string, JsonElement> dataUnit)
         {
             string functionName = ControllerContext.ActionDescriptor.ControllerName + "/" + System.Reflection.MethodBase.GetCurrentMethod().Name;
             string userid = User.FindFirstValue(ClaimTypes.Name);
@@ -488,10 +491,17 @@ namespace WaferMapViewer.Controllers
                 using var connection = new SqlConnection(_connection.DefaultConnection);
                 using var command = new SqlCommand("CountPositionUnit", connection) { CommandType = CommandType.StoredProcedure };
 
+                int idWaferMap = dataUnit["idWaferMap"].GetInt32();
+                var frameId = dataUnit["frameId"].ValueKind == JsonValueKind.Null ? "" : dataUnit["frameId"].GetString();
+                List<string> listUnit = System.Text.Json.JsonSerializer.Deserialize<List<string>>(dataUnit["listUnit"].GetRawText());
+                string stringUnit = "";
+                if (listUnit.Count > 0) {
+                    stringUnit = string.Join(";", listUnit);
+                }
 
                 // Thêm các tham số cho stored procedure (nếu cần)
                 command.Parameters.AddWithValue("@idWaferMap", idWaferMap);
-                command.Parameters.AddWithValue("@frameId", frameId == null ? "" : frameId);
+                command.Parameters.AddWithValue("@frameId", frameId);
                 command.Parameters.AddWithValue("@stringUnit", stringUnit == null ? "" : stringUnit);
 
                 connection.Open();

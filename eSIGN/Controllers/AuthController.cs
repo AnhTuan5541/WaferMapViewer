@@ -1,17 +1,11 @@
-﻿using WaferMapViewer.Common;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Options;
+using System.Data;
+using System.DirectoryServices;
+using WaferMapViewer.Common;
 using WaferMapViewer.Data;
 using WaferMapViewer.Response;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
-using System.Data;
-using System.Linq;
-using System.Reflection.PortableExecutable;
-using System.DirectoryServices;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using Microsoft.Extensions.Options;
 
 namespace WaferMapViewer.Controllers
 {
@@ -30,7 +24,7 @@ namespace WaferMapViewer.Controllers
             string functionName = ControllerContext.ActionDescriptor.ControllerName + "/" + System.Reflection.MethodBase.GetCurrentMethod().Name;
             try
             {
-                
+
                 if (string.IsNullOrEmpty(userid) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(site))
                 {
                     CommonFunction.LogInfo(_connection.DefaultConnection, userid, "Fail to Sign in: Empty username or password", CommonFunction.SUCCESS, functionName);
@@ -43,7 +37,8 @@ namespace WaferMapViewer.Controllers
                     };
                     return Ok(response);
                 }
-                else {
+                else
+                {
                     Dictionary<string, object> userInfo = new Dictionary<string, object>();
                     List<Dictionary<string, object>> userList = new List<Dictionary<string, object>>();
                     //Kiểm tra tài khoàn AD
@@ -57,7 +52,7 @@ namespace WaferMapViewer.Controllers
                             ldapPathFormat = "LDAP://AWUSDCP04.us.ds.amkor.com:3268";//AWUSDCP05.us.ds.amkor.com
                             break;
                         case "ATJ":
-                            ldapPathFormat = "LDAP://Adldap.amkor.com:3268";
+                            ldapPathFormat = "LDAP://jp.ds.amkor.com";
                             break;
                         case "ATC":
                             ldapPathFormat = "LDAP://C3WCNDCP01.CN.DS.AMKOR.COM:3268";//LDAP://C3WCNDCP02.CN.DS.AMKOR.COM:3268
@@ -75,7 +70,7 @@ namespace WaferMapViewer.Controllers
                             ldapPathFormat = "LDAP://PTWDCP01.eu.ds.amkor.com:3268";
                             break;
                         case "ATV":
-                            ldapPathFormat = "LDAP://AWVNDCP01.vn.ds.amkor.com:3268";
+                            ldapPathFormat = "LDAP://vn.ds.amkor.com";
                             /*ldapPathFormat = "LDAP://V1WVNDCP01.vn.ds.amkor.com:3268";*/
                             break;
                     }
@@ -275,7 +270,8 @@ namespace WaferMapViewer.Controllers
                         return Ok(response);
                     }
                 }
-                catch(Exception ex2) {
+                catch (Exception ex2)
+                {
                     // Xử lý lỗi (ví dụ: log lỗi, trả về phản hồi lỗi)
                     CommonFunction.LogInfo(_connection.DefaultConnection, userid, ex.Message, CommonFunction.ERROR, functionName);
 

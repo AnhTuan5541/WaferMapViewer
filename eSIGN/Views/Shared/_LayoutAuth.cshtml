@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Log in</title>
+    <title>Log in</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -16,12 +16,14 @@
     <link rel="stylesheet" href="~/lib/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
+    <link rel="stylesheet" href="~/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/css/style.css">
+
     @await RenderSectionAsync("Styles", required: false)
 
 </head>
-<body class="hold-transition login-page">
+@* <body class="hold-transition login-page">
     <div>
-        
         <!-- Preloader -->
         <div id="loading" style="display:none">
             <img class="animation__shake" src="~/lib/dist/img/loading1.gif" alt="AdminLTELogo" height="200" width="200">
@@ -38,5 +40,25 @@
         <!-- AdminLTE App -->
         @await RenderSectionAsync("Scripts", required: false)
     </div>
+</body> *@
+
+@* <body class="img js-fullheight" style="background-image: url(/images/bg.jpg);"> *@
+<body class="img js-fullheight" style="background-image: url(/upload/360_F_545853625_9FPjxn2NOpzLiN1hOVp76wDlMBX7x3rc.jpg);">
+    <!-- Preloader -->
+    <div id="loading" style="display:none">
+        <img class="animation__shake" src="~/lib/dist/img/loading1.gif" alt="AdminLTELogo" height="200" width="200">
+    </div>
+
+    @RenderBody()
+
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/popper.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/main.js"></script>
+    <script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" data-cf-beacon="{" rayid":"8c566c439c239ff9","servertiming":{"name":{"cfextpri":true,"cfl4":true}},"version":"2024.8.0","token":"cd0b4b3a733644fc843ef0b185f98241"}"="" crossorigin="anonymous"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
 </body>
+</html>
 </html>

@@ -18,7 +18,7 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 .pagination {
     float: right;
@@ -58,7 +58,7 @@ body {
 }
 
 #content.opacity-content {
-    opacity: 0.7;
+    opacity: 0.9;
 }
 
 .file-image {

@@ -29,11 +29,12 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\lib\dist\js\pages\" />
-    <Folder Include="wwwroot\upload\" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="web.config" />
+    <None Include="wwwroot\fonts\fontawesome-webfont.woff2" />
+    <None Include="wwwroot\images\fontawesome-webfont.svg" />
   </ItemGroup>
   
   <ItemGroup>
